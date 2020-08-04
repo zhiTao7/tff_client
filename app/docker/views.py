@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import request
+from flask import request, jsonify
 from . import docker_control
 from tools.docker_control import docker_client
 
@@ -13,5 +13,7 @@ def contains_list():
         'message': 'Parameter is invalid'
     }
 
-    docker_client.containers.list()
+    contains = docker_client.containers.list()
+    print(contains)
 
+    return jsonify(resp_message)
