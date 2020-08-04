@@ -48,7 +48,8 @@ def contains_start():
     assert isinstance(contains_list, list)
     for c in contains_list:
         assert isinstance(c, dict)
-        id_, status = c.items()
+        id_ = c["id_"]
+        status = c["status"]
         container = docker_client.containers.get(id_)
         print(container)
         # if container and status == 'running':
