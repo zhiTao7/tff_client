@@ -10,10 +10,13 @@ def contains_list():
 
     resp_message = {
         'code': 0,
+        'contains': list(),
         'message': 'Parameter is invalid'
     }
 
     contains = docker_client.containers.list()
-    print(contains)
+    for c in contains:
+        resp_message['contains'].append({c.Name, c.State.Status})
 
     return jsonify(resp_message)
+
