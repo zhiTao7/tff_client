@@ -41,13 +41,13 @@ def contains_start():
         'code': 0,
     }
     id_list = request.json.get('id')
-
-    for i in id_list:
-        container = docker_client.containers.get(i)
-        if container.status == 'exited':
-            container.start()
-    else:
-        resp_message['code'] = 1
+    if id_list:
+        for i in id_list:
+            container = docker_client.containers.get(i)
+            if container.status == 'exited':
+                container.start()
+        else:
+            resp_message['code'] = 1
 
     return jsonify(resp_message)
 
@@ -63,12 +63,12 @@ def contains_stop():
     }
 
     id_list = request.json.get('id')
-
-    for i in id_list:
-        container = docker_client.containers.get(i)
-        if container.status == 'running':
-            container.stop()
-    else:
-        resp_message['code'] = 1
+    if id_list:
+        for i in id_list:
+            container = docker_client.containers.get(i)
+            if container.status == 'running':
+                container.stop()
+        else:
+            resp_message['code'] = 1
 
     return jsonify(resp_message)
