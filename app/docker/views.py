@@ -55,3 +55,38 @@ def contains_start():
     except Exception as e:
         pass
     return jsonify(resp_message)
+
+
+@docker_control.route("/stop", methods=["POST"])
+def contains_stop():
+    """
+    request {
+        "contains": [{"id_": "", "status": "", }]
+    }
+    :return:
+    """
+    resp_message = {
+        'code': 0,
+    }
+
+    # contains_list = request.json.get('contains')
+    # try:
+    #     assert isinstance(contains_list, list)
+    #     for c in contains_list:
+    #         assert isinstance(c, dict)
+    #         container = docker_client.containers.get(c.get('id_'))
+    #         if container and c.get('status') == 'running':
+    #             container.stop()
+    #     resp_message['code'] = 1
+    # except Exception as e:
+    #     pass
+    id_list = request.json.get('id')
+    try:
+        for i in id_list:
+            container = docker_client.containers.get(i)
+            print(container.status)
+            container.stop()
+        resp_message['code'] = 1
+    except Exception as e:
+        pass
+    return jsonify(resp_message)
