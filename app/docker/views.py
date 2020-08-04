@@ -16,7 +16,7 @@ def contains_list():
 
     contains = docker_client.containers.list()
     for c in contains:
-        resp_message['contains'].append({c.Name, c.State.Status})
+        resp_message['contains'].append({c.attrs['Name'], c.attrs['State']['Status']})
 
     return jsonify(resp_message)
 
