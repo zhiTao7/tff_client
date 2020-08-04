@@ -10,14 +10,14 @@ def contains_list():
 
     resp_message = {
         'code': 0,
-        'contains': {'name': '', 'status': ''},
+        'contains': {'name': '', 'Status': ''},
         'message': 'Parameter is invalid'
     }
 
     contains = docker_client.containers.list()
     for c in contains:
         resp_message['contains']['name'] = c.attrs['Name']
-        resp_message['contains']['status'] = c.attrs['Status']
+        resp_message['contains']['Status'] = c.attrs['State']['Status']
 
     return jsonify(resp_message)
 
