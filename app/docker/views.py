@@ -35,24 +35,23 @@ def contains_list():
 def contains_start():
     """
     request {
-        "contains": "[{'id_': 'status': '', }]"
+        "contains": [{"id_": "", "status": "", }]
     }
     :return:
     """
     resp_message = {
         'code': 0,
-        'message': 'Parameter is invalid'
     }
 
     contains_list = request.json.get('contains')
-    assert isinstance(contains_list, list)
-    for c in contains_list:
-        assert isinstance(c, dict)
-        id_ = c["id_"]
-        status = c["status"]
-        container = docker_client.containers.get(id_)
-        print(container)
-        # if container and status == 'running':
-        #     container.
-    # print(request.json)
+    try:
+        assert isinstance(contains_list, list)
+        for c in contains_list:
+            assert isinstance(c, dict)
+            container = docker_client.containers.get(c.get('id_'))
+            if container and c.get('status') != 'running':
+                container.start()
+        resp_message['code'] = 1
+    except Exception as e:
+        pass
     return jsonify(resp_message)
