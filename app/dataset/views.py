@@ -8,11 +8,12 @@ from . import dataset
 
 @dataset.route("/upload", methods=["POST"])
 def dataset_upload():
+    """
 
-    resp_message = {
-        'code': 0,
-        'message': 'Parameter is invalid'
-    }
+    :return:
+    """
+
+    resp_message = {'code': 0}
 
     file_obj = request.files.get('file_path')
     if file_obj:
@@ -21,9 +22,6 @@ def dataset_upload():
             with open(_file_path, 'wb') as f:
                 f.write(file_obj.read())
             resp_message["code"] = 1
-            resp_message["message"] = "succeed"
-        else:
-            resp_message["message"] = "There is a data source with the same name"
 
     return jsonify(resp_message)
 
@@ -31,10 +29,7 @@ def dataset_upload():
 @dataset.route("/delete")
 def dataset_delete():
 
-    resp_message = {
-        'code': 0,
-        'message': 'Parameter is invalid'
-    }
+    resp_message = {'code': 0}
 
     file_name = request.args.get('dataset')
     if file_name:
@@ -45,8 +40,5 @@ def dataset_delete():
             except FileNotFoundError:
                 pass
             resp_message['code'] = "1"
-            resp_message['message'] = "succeed"
-        else:
-            resp_message['message'] = "The data source does not exist"
 
     return jsonify(resp_message)

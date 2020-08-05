@@ -14,7 +14,6 @@ def contains_list():
     resp_message = {
         'code': 0,
         'contains': list(),
-        'message': 'Empty'
     }
 
     contains = docker_client.containers.list()
