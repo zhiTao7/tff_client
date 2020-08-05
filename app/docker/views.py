@@ -31,30 +31,10 @@ def contains_list():
     return jsonify(resp_message)
 
 
-@docker_control.route("/start", methods=["POST"])
-def contains_start():
+@docker_control.route("/control/<cmd>", methods=["POST"])
+def contains_control(cmd):
     """
-    request {"id": ["1e3967531655", "f252c997504d"]}
-    :return:
-    """
-    resp_message = {
-        'code': 0,
-    }
-    id_list = request.json.get('id')
-    if id_list:
-        for i in id_list:
-            container = docker_client.containers.get(i)
-            if container.status == 'exited':
-                container.start()
-        else:
-            resp_message['code'] = 1
-
-    return jsonify(resp_message)
-
-
-@docker_control.route("/stop", methods=["POST"])
-def contains_stop():
-    """
+    cmd : start stop restart
     request {"id": ["1e3967531655", "f252c997504d"]}
     :return:
     """
@@ -66,9 +46,8 @@ def contains_stop():
     if id_list:
         for i in id_list:
             container = docker_client.containers.get(i)
-            if container.status == 'running':
-                container.stop()
-        else:
-            resp_message['code'] = 1
+            if cmd in ('start', 'stop', 'restart'):
+                getattr(container, cmd)()
+                resp_message['code'] = 1
 
     return jsonify(resp_message)
