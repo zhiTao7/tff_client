@@ -43,7 +43,7 @@ def dataset_delete():
             except FileNotFoundError:
                 pass
             resp_message['code'] = "1"
-            resp_message['code'] = "File deleted"
+            resp_message['msg'] = "File deleted"
         else:
             resp_message["msg"] = "File does not exist"
 
