@@ -22,6 +22,9 @@ def dataset_upload():
             with open(_file_path, 'wb') as f:
                 f.write(file_obj.read())
             resp_message["code"] = 1
+            resp_message["msg"] = f"/testdata/{file_obj.filename}"
+        else:
+            resp_message["msg"] = "File already exists"
 
     return jsonify(resp_message)
 
@@ -40,5 +43,8 @@ def dataset_delete():
             except FileNotFoundError:
                 pass
             resp_message['code'] = "1"
+            resp_message['code'] = "File deleted"
+        else:
+            resp_message["msg"] = "File does not exist"
 
     return jsonify(resp_message)
