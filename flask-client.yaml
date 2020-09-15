@@ -1,0 +1,12 @@
+version: '3'
+services:
+    tff_client_server:
+      build:
+          context: ./tff_client
+          dockerfile: Dockerfile
+      image: registry.cn-shanghai.aliyuncs.com/${NAME_SPACE}/tff_client_server:${TAG}
+      ports:
+          - "5000:5000"
+      volumes:
+          - ~/federated_learning/testdata:/testdata
+          - /var/run/docker.sock:/var/run/docker.sock
