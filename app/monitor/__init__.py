@@ -2,4 +2,4 @@
 from flask import Blueprint
 
 
-dataset = Blueprint("auth", __name__)
+system_monitor = Blueprint("system_monitor", __name__)

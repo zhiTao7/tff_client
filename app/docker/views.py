@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import json
+import docker
 from flask import request, jsonify
+
 from . import docker_control
 from tools.docker_control import docker_client
 
@@ -16,7 +18,7 @@ def contains_list():
         'contains': list(),
     }
 
-    contains = docker_client.containers.list()
+    contains = docker_client.containers.list(all=True)
     if contains:
         resp_message['code'] = 1
         resp_message['message'] = "succeed"
@@ -30,23 +32,23 @@ def contains_list():
     return jsonify(resp_message)
 
 
-@docker_control.route("/control/<cmd>", methods=["POST"])
+@docker_control.route("/control/<cmd>")
 def contains_control(cmd):
     """
-    cmd : start stop restart
-    request {"id": ["1e3967531655", "f252c997504d"]}
+    cmd : stop restart
     :return:
     """
     resp_message = {
         'code': 0,
     }
-
-    id_list = request.json.get('id')
-    if id_list:
-        for i in id_list:
-            container = docker_client.containers.get(i)
-            if cmd in ('start', 'stop', 'restart'):
-                getattr(container, cmd)()
-                resp_message['code'] = 1
+    id_list = request.args.get('_id')
+    if cmd in ('stop', 'restart'):
+        try:
+            container = docker_client.containers.get(id_list)
+        except docker.errors.NotFound:
+            pass
+        else:
+            getattr(container, cmd)()
+            resp_message['code'] = 1
 
     return jsonify(resp_message)

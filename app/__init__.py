@@ -15,11 +15,13 @@ db = SQLAlchemy()
 def create_app(config_name):
     from app.dataset.views import dataset
     from app.docker.views import docker_control
+    from app.monitor.views import system_monitor
     from app import models
 
     app = Flask(__name__)
     app.register_blueprint(dataset, url_prefix="/dataset")
     app.register_blueprint(docker_control, url_prefix="/docker")
+    app.register_blueprint(system_monitor, url_prefix="/monitor")
     app.config.from_object(config[config_name])
 
     db.init_app(app)
